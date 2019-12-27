@@ -18,6 +18,9 @@ MJPEG Stream Server on RPi: https://blog.csdn.net/xiao__run/article/details/7634
   $> ./mjpeg_streamer -i 'input_uvc.so -d /dev/video0' -o 'output_http.so -p 8080'
   
 ## Viewing stream on client PC
+  http://IP:8080/?action=stream
+  
+## Taking a snapshot from server
   http://IP:8080/?action=snapshot
   
  
