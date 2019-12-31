@@ -62,7 +62,7 @@ class MainGUI:
 		# Video Panel
 		#---------------------------------
 		#-- Use frame#0 (upper-left) to display feyeView
-		self.View = tkViPanel(self.L1_Frames[2], osdScale=1.2, size=(720, 540))	# (720, 540), (960, 720)
+		self.View = tkViPanel(self.L1_Frames[2], osdScale=1.2, size=(1280, 720))	# (720, 540), (960, 720)
 
 		#---------------------------------
 		# Connection Page
@@ -160,7 +160,7 @@ def url_open_stream(url):
 def calcualte_score(img):
 	# lap = cv2.convertScaleAbs(cv2.Laplacian(img, cv2.CV_16S, ksize=3))
 	lap = cv2.convertScaleAbs(cv2.Laplacian(img, cv2.CV_16S, ksize=3)) #-- use cv2.CV16S to prevent from overflow )negative value)
-	score = np.sum(lap)
+	score = np.sum(lap)/(img.shape[0]*img.shape[1])
 	return score, lap
 
 
@@ -217,7 +217,8 @@ def focusing_scoring(frame, roi_rects):
 def draw_focusing(frame, roi_rects, roi_scores):
 	for roi in roi_scores:
 		roi_name, score = roi
-		roi_rects.draw(roi_name, frame, text="{}".format(score))
+		# roi_rects.set_property(roi_name, fcolor=(0, 255, 255))
+		roi_rects.draw(roi_name, frame, text="{:.2f}".format(score))
 
 
 #---------- For callback draw
@@ -393,7 +394,7 @@ while True:
 		img = frame_img
 		TS.SubEnd("cvtJPG")
 
-	if False: #-- DEBUG ONLY
+	if True: #-- DEBUG ONLY
 		#--- 計算調焦分數
 		TS.SubStart()
 		scores = focusing_scoring(img, roi_rects)
